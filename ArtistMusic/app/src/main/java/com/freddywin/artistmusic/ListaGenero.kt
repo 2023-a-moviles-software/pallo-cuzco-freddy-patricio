@@ -21,7 +21,7 @@ class ListaGenero {
         println("Ingrese el nombre del nuevo Genero:")
         val name = readLine()!!
         val id = idGeneros.nextInt()
-        println("Ingresé la duracion , de 0.0 a 5.0:")
+        println("Ingresé la valoracion del genero , de 0.0 a 5.0:")
         val puntuacion = readLine()!!.toDouble()
         println("Ingresé la fecha de lanzamiento YYYY-MM-DD:")
         val datoCreacionaux = readLine()

@@ -157,7 +157,7 @@ class ListaArtista() {
                             encontrarArtista.datosCreacionArtista = newDateCreation
                             listaArtista.set(indexArtista, encontrarArtista)
                             escribirActualizacionDato(listaArtista, pathFile)
-                            println("El Platillo se actualizo con exito!")
+                            println("El Artista se actualizo con exito!")
                             break
                         }
                         5 -> {
