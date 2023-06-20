@@ -15,7 +15,7 @@ class ListaGenero {
     private val idGeneros = RandomUnrepeated(0, 20)
 
 
-    //Creation Restaurant
+    //Creacion de genero
     @RequiresApi(Build.VERSION_CODES.O)
     fun creacionGenero(): Genero {
         println("Ingrese el nombre del nuevo Genero:")
@@ -68,32 +68,27 @@ class ListaGenero {
         try {
             var result = ""
             var line = ""
-            val reader = File(pathFile).bufferedReader()
-            while (reader.readLine().also { line = it } != null) {
+            val leer = File(pathFile).bufferedReader()
+            while (leer.readLine().also { line = it } != null) {
                 val tokenGenero = StringTokenizer(line, ",")
                 var data = tokenGenero.nextToken()
                 val nombreGenero = data;
                 data = tokenGenero.nextToken()
-                val idGenero = data.toInt();
+                val idGenero = data.toInt()
                 data = tokenGenero.nextToken()
-                val duracion = data.toDouble();
+                val duracion = data.toDouble()
                 data = tokenGenero.nextToken()
                 val fechaLanzamiento = data
                 data = tokenGenero.nextToken()
                 val esPopular = data.toBoolean()
 
-                val datoCreacionGenero =
-                    LocalDate.parse(fechaLanzamiento, DateTimeFormatter.ISO_DATE)
-                val newDishFromFile = Genero(
-                    nombreGenero, idGenero, duracion, datoCreacionGenero,
-                    esPopular
-                )
-                listGenero.add(newDishFromFile)
-                result += line
+                val datoCreacionGenero = LocalDate.parse(fechaLanzamiento, DateTimeFormatter.ISO_DATE)
+                val nuevoGeneroArchivo = Genero(nombreGenero, idGenero, duracion, datoCreacionGenero, esPopular)
+                listGenero.add(nuevoGeneroArchivo)
+                result+=line
             }
-            reader.close()
+            leer.close()
         } catch (e: java.lang.Exception) {
-            //println("Erorr!! ${e}")
         }
         return listGenero
     }
@@ -216,13 +211,13 @@ class ListaGenero {
     }
 
     //Eliminar genero
-    fun eliminarGenero(findGenero: String, listaArtista: ArrayList<Genero>, pathFile: String):
+    fun eliminarGenero(findGenero: String, listaGenero: ArrayList<Genero>, pathFile: String):
             ArrayList<Genero> {
         try {
-            for (encontrarGenero in listaArtista) {
+            for (encontrarGenero in listaGenero) {
                 if (encontrarGenero.nombreGenero == findGenero) {
-                    listaArtista.remove(encontrarGenero)
-                    escribirActualizacionDato(listaArtista, pathFile)
+                    listaGenero.remove(encontrarGenero)
+                    escribirActualizacionDato(listaGenero, pathFile)
                     println("Genero eliminado con exito!!")
                     break
                 } else {
@@ -232,6 +227,6 @@ class ListaGenero {
         } catch (e: Exception) {
             println("Error de eliminar Artista $e")
         }
-        return listaArtista
+        return listaGenero
     }
 }

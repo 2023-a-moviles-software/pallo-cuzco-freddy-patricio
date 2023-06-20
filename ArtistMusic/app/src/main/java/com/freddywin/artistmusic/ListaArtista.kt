@@ -65,7 +65,6 @@ class ListaArtista() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun leerArtista(pathFile: String): ArrayList<Artista> {
         val listArtista = ArrayList<Artista>()
-
         try {
             var result = ""
             var line = ""

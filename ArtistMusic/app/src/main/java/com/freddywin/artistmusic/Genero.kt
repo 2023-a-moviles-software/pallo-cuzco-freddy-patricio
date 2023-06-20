@@ -12,11 +12,11 @@ class Genero(
     override fun toString(): String {
         val imprimir = StringBuilder()
         imprimir.appendLine("-------------------------------------------------------------")
-        imprimir.appendLine("Nombre del Artista: $nombreGenero")
-        imprimir.appendLine("ID del Artista: $idGenero")
+        imprimir.appendLine("Nombre del Genero: $nombreGenero")
+        imprimir.appendLine("ID del Genero: $idGenero")
         imprimir.appendLine("Valoración: $puntuacion")
-        imprimir.appendLine("Datos de Creación del Artista: $fechaLanzamiento")
-        imprimir.appendLine("Activo: $esPopular")
+        imprimir.appendLine("Datos de Creación del Genero: $fechaLanzamiento")
+        imprimir.appendLine("Es popular? : $esPopular")
         return imprimir.toString()
     }
 
