@@ -65,6 +65,10 @@ class ListaArtista() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun leerArtista(pathFile: String): ArrayList<Artista> {
         val listArtista = ArrayList<Artista>()
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
         try {
             var result = ""
             var line = ""
@@ -156,7 +160,11 @@ class ListaArtista() {
                             encontrarArtista.datosCreacionArtista = newDateCreation
                             listaArtista.set(indexArtista, encontrarArtista)
                             escribirActualizacionDato(listaArtista, pathFile)
+<<<<<<< HEAD
                             println("El Artista se actualizo con exito!")
+=======
+                            println("El Platillo se actualizo con exito!")
+>>>>>>> main
                             break
                         }
                         5 -> {

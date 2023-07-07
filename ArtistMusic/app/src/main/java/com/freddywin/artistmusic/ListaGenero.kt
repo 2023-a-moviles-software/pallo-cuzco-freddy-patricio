@@ -15,13 +15,21 @@ class ListaGenero {
     private val idGeneros = RandomUnrepeated(0, 20)
 
 
+<<<<<<< HEAD
     //Creacion de genero
+=======
+    //Creation Restaurant
+>>>>>>> main
     @RequiresApi(Build.VERSION_CODES.O)
     fun creacionGenero(): Genero {
         println("Ingrese el nombre del nuevo Genero:")
         val name = readLine()!!
         val id = idGeneros.nextInt()
+<<<<<<< HEAD
         println("Ingresé la valoracion del genero , de 0.0 a 5.0:")
+=======
+        println("Ingresé la duracion , de 0.0 a 5.0:")
+>>>>>>> main
         val puntuacion = readLine()!!.toDouble()
         println("Ingresé la fecha de lanzamiento YYYY-MM-DD:")
         val datoCreacionaux = readLine()
@@ -68,20 +76,32 @@ class ListaGenero {
         try {
             var result = ""
             var line = ""
+<<<<<<< HEAD
             val leer = File(pathFile).bufferedReader()
             while (leer.readLine().also { line = it } != null) {
+=======
+            val reader = File(pathFile).bufferedReader()
+            while (reader.readLine().also { line = it } != null) {
+>>>>>>> main
                 val tokenGenero = StringTokenizer(line, ",")
                 var data = tokenGenero.nextToken()
                 val nombreGenero = data;
                 data = tokenGenero.nextToken()
+<<<<<<< HEAD
                 val idGenero = data.toInt()
                 data = tokenGenero.nextToken()
                 val duracion = data.toDouble()
+=======
+                val idGenero = data.toInt();
+                data = tokenGenero.nextToken()
+                val duracion = data.toDouble();
+>>>>>>> main
                 data = tokenGenero.nextToken()
                 val fechaLanzamiento = data
                 data = tokenGenero.nextToken()
                 val esPopular = data.toBoolean()
 
+<<<<<<< HEAD
                 val datoCreacionGenero = LocalDate.parse(fechaLanzamiento, DateTimeFormatter.ISO_DATE)
                 val nuevoGeneroArchivo = Genero(nombreGenero, idGenero, duracion, datoCreacionGenero, esPopular)
                 listGenero.add(nuevoGeneroArchivo)
@@ -89,6 +109,20 @@ class ListaGenero {
             }
             leer.close()
         } catch (e: java.lang.Exception) {
+=======
+                val datoCreacionGenero =
+                    LocalDate.parse(fechaLanzamiento, DateTimeFormatter.ISO_DATE)
+                val newDishFromFile = Genero(
+                    nombreGenero, idGenero, duracion, datoCreacionGenero,
+                    esPopular
+                )
+                listGenero.add(newDishFromFile)
+                result += line
+            }
+            reader.close()
+        } catch (e: java.lang.Exception) {
+            //println("Erorr!! ${e}")
+>>>>>>> main
         }
         return listGenero
     }
@@ -211,6 +245,7 @@ class ListaGenero {
     }
 
     //Eliminar genero
+<<<<<<< HEAD
     fun eliminarGenero(findGenero: String, listaGenero: ArrayList<Genero>, pathFile: String):
             ArrayList<Genero> {
         try {
@@ -218,6 +253,15 @@ class ListaGenero {
                 if (encontrarGenero.nombreGenero == findGenero) {
                     listaGenero.remove(encontrarGenero)
                     escribirActualizacionDato(listaGenero, pathFile)
+=======
+    fun eliminarGenero(findGenero: String, listaArtista: ArrayList<Genero>, pathFile: String):
+            ArrayList<Genero> {
+        try {
+            for (encontrarGenero in listaArtista) {
+                if (encontrarGenero.nombreGenero == findGenero) {
+                    listaArtista.remove(encontrarGenero)
+                    escribirActualizacionDato(listaArtista, pathFile)
+>>>>>>> main
                     println("Genero eliminado con exito!!")
                     break
                 } else {
@@ -227,6 +271,10 @@ class ListaGenero {
         } catch (e: Exception) {
             println("Error de eliminar Artista $e")
         }
+<<<<<<< HEAD
         return listaGenero
+=======
+        return listaArtista
+>>>>>>> main
     }
 }

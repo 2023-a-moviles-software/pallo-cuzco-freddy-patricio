@@ -144,14 +144,22 @@ fun main(args: Array<String>) {
                     val auxLeerGenero = listaGeneroClase.leerGenero(lugarGeneroArchivo)
                     println(auxLeerGenero)
                     println()
+<<<<<<< HEAD
                     println("Ingrese el nombre del genero que desea eliminar")
+=======
+                    println("Ingrese el nombre del restaurate que desea eliminar")
+>>>>>>> main
                     val eliminarGeneros = readLine()!!
                     val auxEliminar = listaGeneroClase.eliminarGenero(
                         eliminarGeneros,
                         auxLeerGenero,
                         lugarGeneroArchivo
                     )
+<<<<<<< HEAD
                     println("Los Generos registrados son: ")
+=======
+                    println("Los Restaurantes registrados son: ")
+>>>>>>> main
                     println(auxEliminar)
                 }
 
