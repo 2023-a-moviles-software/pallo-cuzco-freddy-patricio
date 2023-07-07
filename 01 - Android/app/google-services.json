@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "268365881770",
+    "project_id": "a-moviles-software-c670e",
+    "storage_bucket": "a-moviles-software-c670e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268365881770:android:d73b1d490d32ffc6f98bd3",
+        "android_client_info": {
+          "package_name": "com.example.movilessoftware2023a"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268365881770-k6nsjlubsivnark2uj04vkpdk9spbte0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI9pmWvXno3HqW2aaoc8s91mfr0VAiYDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268365881770-k6nsjlubsivnark2uj04vkpdk9spbte0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268365881770:android:10dc77464c6ea56ef98bd3",
+        "android_client_info": {
+          "package_name": "com.freddywin.movilessoftware2023a"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268365881770-k6nsjlubsivnark2uj04vkpdk9spbte0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI9pmWvXno3HqW2aaoc8s91mfr0VAiYDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268365881770-k6nsjlubsivnark2uj04vkpdk9spbte0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

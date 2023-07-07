@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_text_bien">#5CFA7E</color>
+    <color name="color_backgroud">#BF00D4</color>
+    <color name="color_text">#E62323</color>
+    <string name="bienvenida">Hola como estas Freddy</string>
+</resources>
