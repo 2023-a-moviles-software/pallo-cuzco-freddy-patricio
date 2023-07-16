@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         //Base de datos SQLite
         //Main CTIVITY
-        EBasesDeDatos.tablaEntrenador=ESqliteHelperEntrenador(this)
+        EBasesDeDatos.tablaEntrenador = ESqliteHelperEntrenador(this)
 
         //Se agrega un variable para el boton
         val botonCicloVida = findViewById<Button>(
@@ -96,6 +96,16 @@ class MainActivity : AppCompatActivity() {
         val botonIntentExplicito = findViewById<Button>(R.id.btn_ir_intent_explicito)
         botonIntentExplicito.setOnClickListener {
             abrirActividadParamentro(CIntentExplicitoParametros::class.java)
+        }
+
+        val botonSqlite = findViewById<Button>(R.id.btn_sqlite)
+        botonSqlite.setOnClickListener {
+            irActividad(ECrudEntrenador::class.java)
+        }
+
+        val botonRView = findViewById<Button>(R.id.btn_revcycler_view)
+        botonRView.setOnClickListener {
+            irActividad(FRecyclerView::class.java)
         }
     }
 

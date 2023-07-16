@@ -19,6 +19,7 @@ class ESqliteHelperEntrenador(contexto: Context?) : SQLiteOpenHelper(
             descripcion VARCHAR(50)
             )
         """.trimIndent()
+        db?.execSQL(scripSQLCreaTablaEntrenador)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
