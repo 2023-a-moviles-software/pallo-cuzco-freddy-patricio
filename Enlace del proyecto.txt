@@ -1,0 +1,9 @@
+Integrenates:
+	Ariel Rosero
+	Fredy Pallo
+
+Link de archivo donde se muestra el Mocku y modelos de bases de datos:
+https://epnecuador-my.sharepoint.com/:w:/g/personal/fredy_pallo_epn_edu_ec/ETe9A-klPg5HrVmmRnWGSYMBqEFr8ZrUxoTXhe3650ItOQ
+
+Link del historia de usuario:
+https://jira.external-share.com/issue/dffc2806-9d02-4f48-b619-9fba081a622b
