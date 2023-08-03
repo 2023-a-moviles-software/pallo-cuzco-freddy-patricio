@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="164dp"
+    android:layout_height="165dp"
+    android:layout_margin="3dp"
+    android:backgroundTint="#3B383F"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="164dp"
+        android:layout_height="165dp">
+
+        <!--image view for displaying image-->
+        <ImageView
+            android:id="@+id/idImagenes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/idArtistaTitulo" />
+
+        <!--text view for displaying news description-->
+        <TextView
+            android:id="@+id/idArtistaTitulo"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/idNombreArtista"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="-1dp"
+            android:padding="4dp"
+            android:text="Titulo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/idNombreArtista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+            android:maxLines="3"
+            android:padding="4dp"
+            android:text="Artista"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
