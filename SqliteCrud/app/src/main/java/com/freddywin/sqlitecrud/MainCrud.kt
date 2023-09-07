@@ -46,48 +46,20 @@ fun main(args: Array<String>) {
                 }
             }
             2 -> {
-                println("---------------------------Mostar Generos Guardados----------------------------")
-                println("───────────────────────────────────────────────────────────────────────────────")
-                val generos = dbHelper.mostarGeneroTotal(conexionABasesDeDatos)
-                for (genero in generos) {
-                    val esPopularTxt = if (genero.esPopular) {
-                        "Si"
-                    } else {
-                        "No"
-                    }
-                    println(
-                        "Nombre del Género: ${genero.nombreGenero}, "
-                                + "Puntuación: ${genero.puntuacionGenero}, "
-                                + "Fecha: ${genero.fechaGenero}, "
-                                + "Es Popular: $esPopularTxt"
-                    )
-                    println("───────────────────────────────────────────────────────────────────────────────")
-                }
+                dbHelper.mostrarGeneroTotal()
             }
             3 -> {
-                println("Eliminaer Genero por ID")
+                println("Eliminaer Genero")
+                dbHelper.mostrarGeneroTotal()
                 println("───────────────────────────────────────────────────────────────────────────────")
-                val generos = dbHelper.mostarGeneroTotal(conexionABasesDeDatos)
-                for (genero in generos) {
-                    val esPopularTxt = if (genero.esPopular) {
-                        "Si"
-                    } else {
-                        "No"
-                    }
-                    println(
-                        "ID Género: ${genero.idGenero}, "
-                                + "Nombre del Género: ${genero.nombreGenero}, "
-                                + "Puntuación: ${genero.puntuacionGenero}, "
-                                + "Fecha: ${genero.fechaGenero}, "
-                                + "Es Popular: $esPopularTxt"
-                    )
-                    println("───────────────────────────────────────────────────────────────────────────────")
-                }
                 print("Ingrese el ID del Genero: ")
-                val idGenero = readLine()?.toIntOrNull() ?: continue
-                dbHelper.eliminarGenero(conexionABasesDeDatos, idGenero)
-                println("Género Eiminado")
-
+                val idGeneroEliminar = readLine()?.toIntOrNull() ?: continue
+                val generoEliminado=dbHelper.editarGenero(idGeneroEliminar)
+                if (generoEliminado){
+                    println("Genero Eliminado Exitozamente")
+                }else{
+                    println("Fallo de Eliminar Genero")
+                }
             }
             4 -> {
 
