@@ -1,18 +1,15 @@
 package com.freddywin.movilessoftware2023a
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import android.provider.ContactsContract
-import android.provider.ContactsContract.Contacts
 import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContract
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import java.net.URI
-import com.freddywin.movilessoftware2023a.R.id.btn_ir_list_view as btn_ir_list_view1
+import com.freddywin.movilessoftware2023a.BEntrenador
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -119,6 +115,13 @@ class MainActivity : AppCompatActivity() {
         botonUiAuth.setOnClickListener {
             irActividad(HFirebaseUIAuth::class.java)
         }
+
+        //para el boton firestore
+        val botonFirestore = findViewById<Button>(R.id.btn_intent_firestore)
+        botonFirestore.setOnClickListener {
+            irActividad(IFirestore::class.java)
+        }
+
     }
 
     fun irActividad(clase: Class<*>) {
@@ -137,6 +140,10 @@ class MainActivity : AppCompatActivity() {
         intentExplicito.putExtra("Edad", "39")
         //enviamos el intent con respuesta
 
+        intentExplicito.putExtra(
+            "entrenador",
+            BEntrenador(1, "Julian", "Entrenador")
+        )
         //Recibimos la respuesta
         callbackContenidoIntentExplicito.launch(intentExplicito)
     }

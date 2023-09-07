@@ -14,11 +14,6 @@ class ArtistaAdapter(
     val context: Context
 ) : RecyclerView.Adapter<ArtistaAdapter.ViewHolder>() {
 
-    companion object {
-        private const val VIEW_TYPE_CATEGORY = 0
-        private const val VIEW_TYPE_SONG = 1
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.card_artistas, parent, false)

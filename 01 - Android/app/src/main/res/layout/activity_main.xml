@@ -114,16 +114,27 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_ir_intent_explicito"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintVertical_bias="0.363" />
 
     <Button
         android:id="@+id/btn_intent_firebase_ui"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:text="UI AUTH"
         app:layout_constraintEnd_toEndOf="@+id/btn_ciclo_vida"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btn_ciclo_vida"
         app:layout_constraintTop_toBottomOf="@+id/btn_ciclo_vida" />
+
+    <Button
+        android:id="@+id/btn_intent_firestore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Firestore"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_intent_firebase_ui"
+        app:layout_constraintStart_toEndOf="@+id/btn_intent_firebase_ui"
+        app:layout_constraintTop_toTopOf="@+id/btn_intent_firebase_ui" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
