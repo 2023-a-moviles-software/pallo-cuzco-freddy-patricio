@@ -74,21 +74,26 @@ class Sqlite(val conexion: Connection) {
     }
 
     fun insertarArtista(connection: Connection, artista: Artista): Boolean {
-        val scripSqlInsert =
-            "INSERT INTO ARTISTA (idArtista, nombreArtista, puntuacionArtista,fechaArtista, esActivo, id_genero)" +
-                    "VALUES(?,?,?,?,?)"
-        val valoresAGuardar: PreparedStatement =
-            connection.prepareStatement(scripSqlInsert)
-        valoresAGuardar.setInt(1, artista.idArtista)
-        valoresAGuardar.setString(2, artista.nombreArtista)
-        valoresAGuardar.setDouble(3, artista.puntuacionArtista)
-        valoresAGuardar.setString(4, artista.fechaArtista)
-        valoresAGuardar.setBoolean(5, artista.esActivo)
-        valoresAGuardar.setInt(6, artista.id_genero)
+        try {
+            val scripSqlInsert =
+                "INSERT INTO Artista (idArtista, nombreArtista, puntuacionArtista, fechaArtista, esActivo, id_Genero)" +
+                        "VALUES (?, ?, ?, ?, ?, ?)"
+            val valoresAGuardar: PreparedStatement =
+                connection.prepareStatement(scripSqlInsert)
+            valoresAGuardar.setInt(1, artista.idArtista)
+            valoresAGuardar.setString(2, artista.nombreArtista)
+            valoresAGuardar.setDouble(3, artista.puntuacionArtista)
+            valoresAGuardar.setString(4, artista.fechaArtista)
+            valoresAGuardar.setBoolean(5, artista.esActivo)
+            valoresAGuardar.setInt(6, artista.id_genero)
 
-        val resulAGuadar = valoresAGuardar.executeUpdate()
-        valoresAGuardar.close()
-        return resulAGuadar > 0
+            val resulAGuadar = valoresAGuardar.executeUpdate()
+            valoresAGuardar.close()
+            return resulAGuadar > 0
+        } catch (ex: Exception) {
+            println("Error al insertar artista: ${ex.message}")
+            return false
+        }
     }
 
     //funcion para mostrar Genero
@@ -127,7 +132,7 @@ class Sqlite(val conexion: Connection) {
                 "No"
             }
             println(
-                "ID Genero: ${genero.idGenero}" +
+                "ID Genero: ${genero.idGenero}, " +
                         "Nombre del Género: ${genero.nombreGenero}, " +
                         "Puntuación: ${genero.puntuacionGenero}, " +
                         "Fecha: ${genero.fechaGenero}, " +
@@ -137,8 +142,56 @@ class Sqlite(val conexion: Connection) {
         }
     }
 
-    //funcion edidtar genero(Actuelizar)
-    fun editarGenero(conexion: Int, genero: Genero): Boolean {
+    //funcion para mostrar Artista
+    fun mostrarArtista(): List<Artista> {
+        val sqlMostar = "SELECT * FROM ARTISTA"
+        val resultado = statement.executeQuery(sqlMostar)
+        val artistaMostrar = mutableListOf<Artista>()
+        while (resultado.next()) {
+            val idArtista = resultado.getInt("idArtista")
+            val nombreArtista = resultado.getString("nombreArtista")
+            val puntuacionArtista = resultado.getDouble("puntuacionArtista")
+            val fechaArtista = resultado.getString("fechaArtista")
+            val esActivo = resultado.getBoolean("esActivo")
+            val id_genero = resultado.getInt("id_Genero")
+            artistaMostrar.add(
+                Artista(
+                    idArtista,
+                    nombreArtista,
+                    puntuacionArtista,
+                    fechaArtista,
+                    esActivo,
+                    id_genero
+                )
+            )
+
+        }
+        return artistaMostrar
+    }
+
+    fun mostrarArtistaTotal() {
+        val artistas = mostrarArtista()
+        println("---------------------------Mostar Artistas Guardados----------------------------")
+        println("───────────────────────────────────────────────────────────────────────────────")
+        for (artista in artistas) {
+            val esPopularTxt = if (artista.esActivo) {
+                "Si"
+            } else {
+                "No"
+            }
+            println(
+                "ID Artistas: ${artista.idArtista}, " +
+                        "Nombre del Género: ${artista.nombreArtista}, " +
+                        "Puntuación: ${artista.puntuacionArtista}, " +
+                        "Fecha: ${artista.fechaArtista}, " +
+                        "Es vivo : $esPopularTxt, "
+            )
+            println("───────────────────────────────────────────────────────────────────────────────")
+        }
+    }
+
+    //funcion editar genero(Actuelizar)
+    fun editarGenero(idGenero: Int, genero: Genero): Boolean {
         val scripSQLiteEditar =
             "UPDATE GENERO SET nombreGenero=?, puntuacionGenero=?, fechaGenero=?, esPopular=? WHERE idGenero=?"
         val valoresAEditar: PreparedStatement = conexion.prepareStatement(scripSQLiteEditar)
@@ -151,6 +204,49 @@ class Sqlite(val conexion: Connection) {
         val resultado = valoresAEditar.executeUpdate()
         valoresAEditar.close()
         return resultado > 0
+    }
+
+    fun editarArtista(idGenero: Int, artista: Artista): Boolean {
+        val scripSQLiteEditar =
+            "UPDATE ARTISTA SET nombreArtista=?, puntuacionArtista=?, fechaArtista=?, esActivo=? WHERE idArtista=?"
+        val valoresAEditar: PreparedStatement = conexion.prepareStatement(scripSQLiteEditar)
+        valoresAEditar.setString(1, artista.nombreArtista)
+        valoresAEditar.setDouble(2, artista.puntuacionArtista)
+        valoresAEditar.setString(3, artista.fechaArtista)
+        valoresAEditar.setBoolean(4, artista.esActivo)
+        valoresAEditar.setInt(5, artista.idArtista)
+
+        val resultado = valoresAEditar.executeUpdate()
+        valoresAEditar.close()
+        return resultado > 0
+    }
+
+    fun mostrarArtistaPorGenero(idGenero: Int): List<Artista> {
+
+        val sqlMostrarArtistas = "SELECT * FROM Artista WHERE id_Genero = ?"
+        val valores = conexion.prepareStatement(sqlMostrarArtistas)
+        valores.setInt(1, idGenero)
+        val resultado = valores.executeQuery()
+        val artistasMostrar = mutableListOf<Artista>()
+        while (resultado.next()) {
+            val idArtista = resultado.getInt("idArtista")
+            val nombreArtista = resultado.getString("nombreArtista")
+            val puntuacionArtista = resultado.getDouble("puntuacionArtista")
+            val fechaArtista = resultado.getString("fechaArtista")
+            val esActivo = resultado.getBoolean("esActivo")
+            val idGeneroArtista = resultado.getInt("id_Genero")
+            artistasMostrar.add(
+                Artista(
+                    idArtista,
+                    nombreArtista,
+                    puntuacionArtista,
+                    fechaArtista,
+                    esActivo,
+                    idGeneroArtista
+                )
+            )
+        }
+        return artistasMostrar
     }
 
     //Funciones eliminar
@@ -167,7 +263,7 @@ class Sqlite(val conexion: Connection) {
 
     //Funciones eliminar
     fun eliminarArtista(id: Int): Boolean {
-        val scripSqlBorrar = "DELETE FROM GENERO WHERE idArtista = ?"
+        val scripSqlBorrar = "DELETE FROM Artista WHERE idArtista = ?"
         val preparedStatement: PreparedStatement =
             conexion.prepareStatement(scripSqlBorrar)
         preparedStatement.setInt(1, id)

@@ -4,7 +4,6 @@ import java.sql.DriverManager
 import java.sql.Statement
 
 fun main(args: Array<String>) {
-    println("hola")
     val conexionDB = "jdbc:sqlite:Bases_Datos_GeneroArtista"
     val conexionABasesDeDatos = DriverManager.getConnection(conexionDB)
     val dbHelper = Sqlite(conexionABasesDeDatos)
@@ -26,7 +25,7 @@ fun main(args: Array<String>) {
                 // Aquí puedes solicitar al usuario que ingrese los datos del género
                 print("Ingrese el ID del Genero: ")
                 val idGenero = readLine()?.toIntOrNull() ?: continue
-                print("Ingrese el nombre del Genero:")
+                print("Ingrese el nombre del Genero: ")
                 val nombreGenero = readLine() ?: continue
                 print("Ingrese la puntuación del Genero: ")
                 val puntuacionGenero = readLine()?.toDoubleOrNull() ?: continue
@@ -51,18 +50,158 @@ fun main(args: Array<String>) {
             3 -> {
                 println("Eliminaer Genero")
                 dbHelper.mostrarGeneroTotal()
-                println("───────────────────────────────────────────────────────────────────────────────")
                 print("Ingrese el ID del Genero: ")
                 val idGeneroEliminar = readLine()?.toIntOrNull() ?: continue
-                val generoEliminado=dbHelper.editarGenero(idGeneroEliminar)
-                if (generoEliminado){
+                val generoEliminado = dbHelper.eliminarGenero(idGeneroEliminar)
+                if (generoEliminado) {
                     println("Genero Eliminado Exitozamente")
-                }else{
+                    println()
+                } else {
                     println("Fallo de Eliminar Genero")
                 }
             }
             4 -> {
 
+                println("Editar Genero")
+                dbHelper.mostrarGeneroTotal()
+
+                print("Seleciones el ID para Actualizar: ")
+                val idGeneroEditar = readLine()?.toIntOrNull() ?: continue
+
+                // Solicitar los nuevos datos del género
+                print("Ingrese el nuevo nombre del Género: ")
+                val nuevoNombreGenero = readLine() ?: continue
+                print("Ingrese la nueva puntuación del Género: ")
+                val nuevaPuntuacionGenero = readLine()?.toDoubleOrNull() ?: continue
+                print("Ingrese la nueva fecha del Género (DD-MM-AAAA): ")
+                val nuevaFechaGenero = readLine() ?: continue
+                print("Ingrese si el Género es popular (true/false): ")
+                val nuevoEsPopular = readLine()?.toBoolean() ?: continue
+
+                // Crear un nuevo objeto Genero con los datos actualizados
+                val generoActualizado = Genero(
+                    idGeneroEditar,
+                    nuevoNombreGenero,
+                    nuevaPuntuacionGenero,
+                    nuevaFechaGenero,
+                    nuevoEsPopular
+                )
+
+                val exitoEdicion = dbHelper.editarGenero(idGeneroEditar, generoActualizado)
+                if (exitoEdicion) {
+                    println("Género editado exitosamente.")
+                } else {
+                    println("Error al editar el Género. Asegúrate de que el ID sea válido.")
+                }
+            }
+            5 -> {
+                dbHelper.mostrarGeneroTotal()
+                println("Mostrar Datos de Artista")
+                print("Ingrese ID del genero")
+                val idGenero = readLine()?.toIntOrNull() ?: continue
+                val artistasDelGenero = dbHelper.mostrarArtistaPorGenero(idGenero)
+
+                for (artista in artistasDelGenero) {
+                    println("ID Artista: ${artista.idArtista}, Nombre: ${artista.nombreArtista}")
+                }
+                while (true) {
+                    println("1. Ingresar Artista")
+                    println("2. Mostrar Artista")
+                    println("3. Eliminar Artista")
+                    println("4. Editar Artista")
+                    println("0. Salir")
+                    print("Selecciones una opcion: ")
+                    when (readLine()?.toIntOrNull()) {
+                        1 -> {
+                            println("Ingresar Artista")
+                            print("Ingrese el ID del Artista: ")
+                            val idArtista = readLine()?.toIntOrNull() ?: continue
+                            print("Ingrese el nombre del Artista: ")
+                            val nombreArtista = readLine() ?: continue
+                            print("Ingrese la puntuación del Artista: ")
+                            val puntuacionArtista = readLine()?.toDoubleOrNull() ?: continue
+                            print("Ingrese la fecha del Artista(DD-MM-AAAA): ")
+                            val fechaArtista = readLine() ?: continue
+                            print("Ingrese si es popular (true/false): ")
+                            val esActivo = readLine()?.toBoolean() ?: continue
+                            print("Ingrese ID del genero: ")
+                            val id_Genero = readLine()?.toIntOrNull() ?: continue
+
+                            val nuevoArtista =
+                                Artista(
+                                    idArtista,
+                                    nombreArtista,
+                                    puntuacionArtista,
+                                    fechaArtista,
+                                    esActivo,
+                                    id_Genero
+                                )
+                            val exito =
+                                dbHelper.insertarArtista(conexionABasesDeDatos, nuevoArtista)
+
+                            if (exito) {
+                                println("Genero ingresado exitosamente.")
+                            } else {
+                                println("Error al ingresar el Genero.")
+                            }
+                        }
+                        2 -> {
+                            dbHelper.mostrarArtistaTotal()
+                        }
+                        3 -> {
+                            println("Eliminaer Artista")
+                            dbHelper.mostrarArtistaTotal()
+                            print("Ingrese el ID del Artista: ")
+                            val idArtistaEliminar = readLine()?.toIntOrNull() ?: continue
+                            val artistaEliminado = dbHelper.eliminarArtista(idArtistaEliminar)
+                            if (artistaEliminado) {
+                                println("Genero Eliminado Exitozamente")
+                                println()
+                            } else {
+                                println("Fallo de Eliminar Genero")
+                            }
+                        }
+                        4 -> {
+                            println("Editar Artista")
+                            dbHelper.mostrarArtistaTotal()
+
+                            print("Seleciones el ID para Actualizar: ")
+                            val idArtistaEditar = readLine()?.toIntOrNull() ?: continue
+
+                            // Solicitar los nuevos datos del género
+                            print("Ingrese el nuevo nombre del Artista: ")
+                            val nuevoNombreArtista = readLine() ?: continue
+                            print("Ingrese la nueva puntuación del Artista: ")
+                            val nuevaPuntuacionArtista = readLine()?.toDoubleOrNull() ?: continue
+                            print("Ingrese la nueva fecha del Artista (DD-MM-AAAA): ")
+                            val nuevaFechaArtista = readLine() ?: continue
+                            print("Ingrese si el nuevo Artista es popular (true/false): ")
+                            val nuevoEsPopular = readLine()?.toBoolean() ?: continue
+                            print("Ingrese si el nuevo ID Genero del Artista (true/false): ")
+                            val nuevoGeneroArtista= readLine()?.toIntOrNull() ?: continue
+
+                            // Crear un nuevo objeto Genero con los datos actualizados
+                            val artistaActualizado = Artista(
+                                idArtistaEditar,
+                                nuevoNombreArtista,
+                                nuevaPuntuacionArtista,
+                                nuevaFechaArtista,
+                                nuevoEsPopular,
+                                nuevoGeneroArtista
+                            )
+
+                            val exitoEdicion = dbHelper.editarArtista(idArtistaEditar, artistaActualizado)
+                            if (exitoEdicion) {
+                                println("Artista editado exitosamente.")
+                            } else {
+                                println("Error al editar el Artista. Asegúrate de que el ID sea válido.")
+                            }
+
+                        }
+                        0 -> break
+                        else -> println("Opción no válida")
+                    }
+                }
             }
             0 -> break
             else -> println("Opcion No Valida")
