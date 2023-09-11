@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238063402367",
+    "project_id": "proyectofinamoviles",
+    "storage_bucket": "proyectofinamoviles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238063402367:android:4353d552c61d085860ae4a",
+        "android_client_info": {
+          "package_name": "com.esmn.gastoguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnoUcbFMBCA-2mViTuc77LPxaV8J92Ee4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
