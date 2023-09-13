@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64574023076",
+    "project_id": "examenmovilesbii",
+    "storage_bucket": "examenmovilesbii.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64574023076:android:6c3e41364803c962ff0d31",
+        "android_client_info": {
+          "package_name": "com.freddywin.genero_artista"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClrbaSZ2zMu01Zsz8vfnpFZieRcNF6Sbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
