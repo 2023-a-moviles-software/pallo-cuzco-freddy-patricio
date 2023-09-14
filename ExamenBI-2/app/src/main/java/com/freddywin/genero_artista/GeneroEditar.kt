@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.google.firebase.database.FirebaseDatabase
 
 class GeneroEditar : AppCompatActivity() {
     fun llenarDatosGenero() {
@@ -49,7 +50,6 @@ class GeneroEditar : AppCompatActivity() {
         }
 
     }
-
 
     fun accionGenero() {
         val nombreGenero = findViewById<EditText>(R.id.editar_genero_nombre)

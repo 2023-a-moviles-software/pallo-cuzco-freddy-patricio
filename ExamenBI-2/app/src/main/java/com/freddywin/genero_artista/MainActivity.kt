@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     var idItemSeleccionado = 0
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         FirebaseApp.initializeApp(this)
 
-        // adaptador
+        //adaptador
         val listViewGenero = findViewById<ListView>(R.id.lst_view_mostrar_genero)
         adaptador = ArrayAdapter(
             this, // Contexto

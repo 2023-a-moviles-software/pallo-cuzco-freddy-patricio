@@ -88,8 +88,10 @@ class ArtistaEditar : AppCompatActivity() {
         val anioArtista = findViewById<EditText>(R.id.editor_artista_anio)
         val esPopularSi = findViewById<RadioButton>(R.id.rdb_espopular_artistaSi)
         val generoId = intent.getStringExtra("idGenero")
+        val idArtista = this.idArtista ?: ""
 
         val nuevoArtista = BArtista(
+            idArtista,
             nombreArtista = nombreArtista.text.toString(),
             valoracion = valoracion.text.toString().toDouble(),
             nombreAlbum = nombreAlbum.text.toString(),
