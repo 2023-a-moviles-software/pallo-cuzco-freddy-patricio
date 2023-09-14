@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 val esPopular = document.getBoolean("esPopular") ?: false
 
                 val bGenero = BGenero(
-                    idBGenero = idBGenero,
+                    key = idBGenero,
                     nombreGenero = nombreGenero ?: "",
                     calificacionGenero = calificacionGenero,
                     fechaGenero = fechaGenero,

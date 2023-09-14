@@ -16,13 +16,16 @@ class GeneroEditar : AppCompatActivity() {
         if (id == -1) {
             return
         }
-        val generoEncontrado = BasesDatosMemoria.obtenerDatosGenero(id)
-        if (generoEncontrado != null) {
-            nombreGenero.setText(generoEncontrado.nombreGenero)
-            calificacion.setText(generoEncontrado.calificacionGenero.toString())
-            fechagenero.setText(generoEncontrado.fechaGenero.toString())
-            esPopularSi.isChecked = generoEncontrado.esPopular
-            esPopularNo.isChecked = !generoEncontrado.esPopular
+        val firestore =
+            Firestore() // Reemplaza Firestore() con tu clase que interactúa con Firestore
+        firestore.obtenerGenero(id.toString()) { genero ->
+            if (genero != null) {
+                nombreGenero.setText(genero.nombreGenero)
+                calificacion.setText(genero.calificacionGenero.toString())
+                fechagenero.setText(genero.fechaGenero.toString())
+                esPopularSi.isChecked = genero.esPopular
+                esPopularNo.isChecked = !genero.esPopular
+            }
         }
     }
 

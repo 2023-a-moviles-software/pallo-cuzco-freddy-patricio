@@ -65,7 +65,11 @@ class ArtistaEditar : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@ArtistaEditar, "Error al cargar datos del artista", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ArtistaEditar,
+                    "Error al cargar datos del artista",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         })
@@ -83,7 +87,7 @@ class ArtistaEditar : AppCompatActivity() {
         val nombreAlbum = findViewById<EditText>(R.id.editor_artista_album)
         val anioArtista = findViewById<EditText>(R.id.editor_artista_anio)
         val esPopularSi = findViewById<RadioButton>(R.id.rdb_espopular_artistaSi)
-        val generoId = intent.getIntExtra("idGenero", -1)
+        val generoId = intent.getStringExtra("idGenero")
 
         val nuevoArtista = BArtista(
             nombreArtista = nombreArtista.text.toString(),
@@ -91,13 +95,13 @@ class ArtistaEditar : AppCompatActivity() {
             nombreAlbum = nombreAlbum.text.toString(),
             anioArtista = anioArtista.text.toString().toInt(),
             esPopular = esPopularSi.isChecked,
-            generoId = generoId
+            generoId = generoId ?: ""
         )
         val databaseReference = FirebaseDatabase.getInstance().reference
-        if (idArtista ==null) {
+        if (idArtista == null) {
             // Agregar un nuevo artista a Firebase
             val artistaRef = databaseReference.child("artistas").push()
-            nuevoArtista.generoId =artistaRef.key
+            nuevoArtista.generoId = artistaRef.key ?: ""
             artistaRef.setValue(nuevoArtista)
 
         } else {

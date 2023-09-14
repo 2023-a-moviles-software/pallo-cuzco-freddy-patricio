@@ -2,6 +2,7 @@ package com.freddywin.genero_artista
 
 
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class Firestore {
@@ -78,6 +79,28 @@ class Firestore {
     fun eliminarGeneroFS(key: String) {
         val generoRef = database.child("generos").child(key)
         generoRef.removeValue()
+    }
+
+    // Definición de la función obtenerGenero
+    fun obtenerGenero(idGenero: String, callback: (BGenero?) -> Unit) {
+        // Aquí debes implementar la lógica para obtener el género con el ID proporcionado
+        // desde Firestore. Luego, llama al callback con los datos del género o nulo si no se encontró.
+
+        // Por ejemplo, si estás utilizando Firebase Firestore:
+        val db = FirebaseFirestore.getInstance()
+        val generoRef = db.collection("generos").document(idGenero)
+
+        generoRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val genero = documentSnapshot.toObject(BGenero::class.java)
+                callback(genero)
+            } else {
+                callback(null)
+            }
+        }.addOnFailureListener {
+            // Manejo de errores si la consulta falla
+            callback(null)
+        }
     }
 }
 

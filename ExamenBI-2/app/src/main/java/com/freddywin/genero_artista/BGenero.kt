@@ -8,12 +8,13 @@ class BGenero {
     var esPopular: Boolean
 
     constructor(
-        idBGenero: String?,
+        key : String?,
         nombreGenero: String,
         calificacionGenero: Double,
         fechaGenero: Int,
         esPopular: Boolean
     ) {
+        this.key=key
         this.nombreGenero = nombreGenero
         this.calificacionGenero = calificacionGenero
         this.fechaGenero = fechaGenero

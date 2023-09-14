@@ -8,12 +8,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.firestore.FirebaseFirestore
 
 class VerGenero : AppCompatActivity() {
-    var arregloViewArtista = BasesDatosMemoria.arregloBArtista
     private var idItemSeleccionado = 0
     var idGenero = -1
     lateinit var adaptador: ArrayAdapter<BArtista>
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +26,27 @@ class VerGenero : AppCompatActivity() {
             irActividad(ArtistaEditar::class.java)
         }
         idGenero = intent.getIntExtra("idGenero", -1)
-        arregloViewArtista = BasesDatosMemoria.obtenerArtistasGeneroId(idGenero)
         actualizarListViewArtista()
+
+
+        // Escuchar cambios en la colección de artistas de Firebase Firestore para el género actual
+        firestore.collection("generos").document(idGenero.toString()).collection("artistas")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    // Manejar errores
+                } else {
+                    // Limpiar la lista y agregar los artistas desde Firebase Firestore
+                    artistas.clear()
+                    snapshot?.documents?.forEach { document ->
+                        val idArtista = document.id
+                        val nombreArtista = document.getString("nombreArtista")
+                        // Agregar los datos a la lista de artistas
+                        artistas.add(BArtista(idArtista, nombreArtista ?: ""))
+                    }
+                    // Actualizar el adaptador
+                    adaptador.notifyDataSetChanged()
+                }
+            }
     }
 
     private fun irActividad(clase: Class<*>) {
@@ -68,7 +88,7 @@ class VerGenero : AppCompatActivity() {
         // obtener el id del ArrayList seleccionado
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val id = info.position
-        idItemSeleccionado = arregloViewArtista[id].idArtista
+        idItemSeleccionado = adaptador.getItem(id)?.idArtista ?: 0
     }
 
     fun abrirDialogoEliminarArtista() {
@@ -76,10 +96,8 @@ class VerGenero : AppCompatActivity() {
         builder.setTitle("Eliminar Artista")
         builder.setMessage("¿Desea eliminar el artista?")
         builder.setPositiveButton("Sí") { dialog, _ ->
-            if (idItemSeleccionado.let { BasesDatosMemoria.eliminarArtista(it) }) {
-                arregloViewArtista = BasesDatosMemoria.obtenerArtistasGeneroId(idGenero)///este
-                Toast.makeText(this, "Artista eliminado correctamente", Toast.LENGTH_SHORT).show()
-                actualizarListViewArtista()
+            if (idItemSeleccionado != 0) {
+                eliminarArtistaFirestore(idItemSeleccionado)
             } else {
                 Toast.makeText(this, "Error al eliminar el artista", Toast.LENGTH_SHORT).show()
             }
@@ -94,11 +112,48 @@ class VerGenero : AppCompatActivity() {
         adaptador = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            BasesDatosMemoria.arregloBArtista
+            mutableListOf()
         )
         listView.adapter = adaptador
+
+        // Obtener artistas del género desde Firebase
+        val artistasRef =
+            firestore.collection("generos").document(idGenero.toString()).collection("artistas")
+
+        artistasRef.get().addOnSuccessListener { result ->
+            adaptador.clear()
+            for (document in result) {
+                val idArtista = document.id
+                val nombreArtista = document.getString("nombreArtista")
+                adaptador.add(BArtista(idArtista, nombreArtista ?: ""))
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Error al obtener los artistas", Toast.LENGTH_SHORT).show()
+        }
+
         adaptador.notifyDataSetChanged()
         registerForContextMenu(listView)
+    }
+
+
+    private fun eliminarArtistaFirebase(idArtista: String) {
+        // Referencia al documento del artista
+        val artistaRef = firestore
+            .collection("generos")
+            .document(idGenero.toString())
+            .collection("artistas")
+            .document(idArtista)
+
+        artistaRef.delete()
+            .addOnSuccessListener {
+                // Eliminación exitosa
+                Toast.makeText(this, "Artista eliminado correctamente", Toast.LENGTH_SHORT).show()
+                actualizarListViewArtista()
+            }
+            .addOnFailureListener { exception ->
+                // Manejar errores en la eliminación
+                Toast.makeText(this, "Error al eliminar el artista", Toast.LENGTH_SHORT).show()
+            }
     }
 
 
