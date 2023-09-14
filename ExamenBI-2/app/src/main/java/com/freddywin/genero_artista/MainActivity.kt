@@ -11,13 +11,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     var idItemSeleccionado = 0
     var idBorrar = 0
     lateinit var adaptador: ArrayAdapter<BGenero>
-    val genero = BasesDatosMemoria.arregloBGenero
+    val genero = mutableListOf<BGenero>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +31,40 @@ class MainActivity : AppCompatActivity() {
         adaptador = ArrayAdapter(
             this, // Contexto
             android.R.layout.simple_list_item_1, // layout.xml que se va usar
-            BasesDatosMemoria.arregloBGenero
+            genero
         )
         listViewGenero.adapter = adaptador
         adaptador.notifyDataSetChanged()
+
+        // Obtener datos de género desde Firebase Firestore
+        val firestore = FirebaseFirestore.getInstance()
+        val generosRef = firestore.collection("generos")
+
+        generosRef.get().addOnSuccessListener { result ->
+            genero.clear() // Limpiar la lista antes de agregar datos
+            for (document in result) {
+                val idBGenero = document.id
+                val nombreGenero = document.getString("nombreGenero")
+                val calificacionGenero = document.getDouble("calificacionGenero") ?: 0.0
+                val fechaGenero = document.getLong("fechaGenero")?.toInt() ?: 0
+                val esPopular = document.getBoolean("esPopular") ?: false
+
+                val bGenero = BGenero(
+                    idBGenero = idBGenero,
+                    nombreGenero = nombreGenero ?: "",
+                    calificacionGenero = calificacionGenero,
+                    fechaGenero = fechaGenero,
+                    esPopular = esPopular
+                )
+
+                genero.add(bGenero)
+            }
+
+            // Notificar al adaptador que los datos han cambiado
+            adaptador.notifyDataSetChanged()
+        }.addOnFailureListener { exception ->
+            // Manejar errores en la obtención de datos
+        }
 
 
         //boton crear genero para cambiar de actividad
@@ -65,7 +96,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.menu_eliminar_genero -> {
-                abrirDialogoEliminarGenero()
+                val generoId =
+                    idItemSeleccionado.toString() // Obtener el ID del género seleccionado
+                if (generoId != null) {
+                    eliminarGeneroFs(generoId) // Llamar a la función para eliminar pasando la clave (key)
+                }
                 return true
             }
             else -> super.onContextItemSelected(item)
@@ -78,8 +113,9 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("Si")
         { // Callback
                 dialog, _ ->
-            if (idItemSeleccionado.let { BasesDatosMemoria.eliminarGenero(it) }) {
-                actualizarListViewGenero()
+            val generoId = idItemSeleccionado.toString()
+            if (generoId.isNotEmpty()) {
+                eliminarGeneroFs(generoId)
             }
         }
         builder.setNegativeButton("No", null)
@@ -100,10 +136,10 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_genero, menu)
         // obtener el id del ArrayList seleccionado
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val generoId = genero[info.position].idBGenero
+        val generoId = genero[info.position].key
 
         if (generoId != null) {
-            idItemSeleccionado = generoId
+            idItemSeleccionado = generoId.toIntOrNull() ?: 0
         }
 
         val idBorrarGenero = info.id.toInt()
@@ -142,15 +178,31 @@ class MainActivity : AppCompatActivity() {
     //----------------Metodo actulizar list View
     private fun actualizarListViewGenero() {
         val listView = findViewById<ListView>(R.id.lst_view_mostrar_genero)
-        val adaptador = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            BasesDatosMemoria.arregloBGenero
-        )
-        listView.adapter = adaptador
-        adaptador.notifyDataSetChanged()
+
+
+        //crear la instancia
+        val firesotore = Firestore()
+
+        //obtener generos
+        firesotore.obtenerGeneros { generos ->
+            val generoAdapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_list_item_1,
+                generos
+            )
+            //establecer el adaptador
+            listView.adapter = generoAdapter
+
+            //notificar
+            generoAdapter.notifyDataSetChanged()
+        }
     }
 
+
+    fun eliminarGeneroFs(key: String) {
+        val firebaseManager = Firestore()
+        firebaseManager.eliminarGeneroFS(key)
+    }
 
     override fun onRestart() {
         super.onRestart()

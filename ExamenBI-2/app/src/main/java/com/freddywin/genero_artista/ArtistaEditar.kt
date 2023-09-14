@@ -6,16 +6,23 @@ import android.os.Bundle
 import android.content.Intent
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ArtistaEditar : AppCompatActivity() {
+    var idArtista: String? = null // Variable para almacenar la clave única del artista
     var idItemSeleccionado = 0
     lateinit var adaptador: ArrayAdapter<BArtista>
-
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_artista_editar)
+
+        // Obtener el id del artista de los extras del intent
+        idArtista = intent.getStringExtra("idArtista")
 
 
         //llamar metodo llenar datos
@@ -35,24 +42,36 @@ class ArtistaEditar : AppCompatActivity() {
         val anioArtista = findViewById<EditText>(R.id.editor_artista_anio)
         val esPopularSi = findViewById<RadioButton>(R.id.rdb_espopular_artistaSi)
         val esPopularNo = findViewById<RadioButton>(R.id.rdb_espopular_artistaNo)
-        val idGenero = intent.getIntExtra("idGenero", -1)
-        val idArtista = intent.getIntExtra("idArtista", -1)
 
-        if (idArtista == -1) {
+        if (idArtista == null) {
             return
         }
-        val artistaEncontrado = BasesDatosMemoria.obtenerDatosArtista(idArtista)
-        if (artistaEncontrado != null) {
-            nombreArtista.setText(artistaEncontrado.nombreArtista)
-            valoracion.setText(artistaEncontrado.valoracion.toString())
-            nombreAlbum.setText(artistaEncontrado.nombreAlbum)
-            anioArtista.setText(artistaEncontrado.anioArtista.toString())
-            esPopularSi.isChecked = artistaEncontrado.esPopular
-            esPopularNo.isChecked = artistaEncontrado.esPopular
-        }
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        val artistaRef = databaseReference.child("artistas").child(idArtista!!)
+
+        artistaRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val artista = dataSnapshot.getValue(BArtista::class.java)
+                    if (artista != null) {
+                        nombreArtista.setText(artista.nombreArtista)
+                        valoracion.setText(artista.valoracion.toString())
+                        nombreAlbum.setText(artista.nombreAlbum)
+                        anioArtista.setText(artista.anioArtista.toString())
+                        esPopularSi.isChecked = artista.esPopular
+                        esPopularNo.isChecked = !artista.esPopular
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@ArtistaEditar, "Error al cargar datos del artista", Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
-    private fun irActividad(clase: Class<*>) {
+    fun irActividad(clase: Class<*>) {
         val intent = Intent(this, clase)
         intent.putExtra("idGenero", intent.getIntExtra("idGenero", -1))
         startActivity(intent)
@@ -67,25 +86,27 @@ class ArtistaEditar : AppCompatActivity() {
         val generoId = intent.getIntExtra("idGenero", -1)
 
         val nuevoArtista = BArtista(
-            idArtista = 0,
             nombreArtista = nombreArtista.text.toString(),
             valoracion = valoracion.text.toString().toDouble(),
             nombreAlbum = nombreAlbum.text.toString(),
             anioArtista = anioArtista.text.toString().toInt(),
             esPopular = esPopularSi.isChecked,
-            generoId = generoId,
+            generoId = generoId
         )
-        val id = intent.getIntExtra("idArtista", -1)
-        if (id == -1) {
-            BasesDatosMemoria.agregarArtista(nuevoArtista)
-            setResult(RESULT_OK)
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        if (idArtista ==null) {
+            // Agregar un nuevo artista a Firebase
+            val artistaRef = databaseReference.child("artistas").push()
+            nuevoArtista.generoId =artistaRef.key
+            artistaRef.setValue(nuevoArtista)
 
         } else {
-            nuevoArtista.idArtista = id
-            BasesDatosMemoria.actualizarArtista(nuevoArtista)
-            setResult(RESULT_OK)
+            // Actualizar un artista existente en Firebase
+            val artistaRef = databaseReference.child("artistas").child(idArtista!!)
+            artistaRef.setValue(nuevoArtista)
         }
-        //irActividad(VerGenero::class.java)
+
+        setResult(RESULT_OK)
         finish()//este
     }
 

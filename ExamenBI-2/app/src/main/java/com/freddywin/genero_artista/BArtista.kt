@@ -1,7 +1,7 @@
 package com.freddywin.genero_artista
 
 class BArtista {
-    var idArtista: Int
+    var key: String? = null
     var nombreArtista: String
     var valoracion: Double
     var nombreAlbum: String
@@ -10,7 +10,6 @@ class BArtista {
     var generoId:Int
 
     constructor(
-        idArtista: Int,
         nombreArtista: String,
         valoracion: Double,
         nombreAlbum: String,
@@ -18,7 +17,7 @@ class BArtista {
         esPopular: Boolean,
         generoId:Int
     ) {
-        this.idArtista = idArtista
+        this.key = key
         this.nombreArtista = nombreArtista
         this.valoracion = valoracion
         this.nombreAlbum = nombreAlbum

@@ -55,21 +55,22 @@ class GeneroEditar : AppCompatActivity() {
         val esPopularSi = findViewById<RadioButton>(R.id.rdb_espopular_generoSi)
 
         val nuevoGenero = BGenero(
-            idBGenero = 0,
+            key = intent.getStringExtra("idGenero"), // Mantenemos la clave original
             nombreGenero = nombreGenero.text.toString(),
             calificacionGenero = calificacion.text.toString().toDouble(),
             fechaGenero = fechagenero.text.toString().toInt(),
             esPopular = esPopularSi.isChecked
         )
+        val firestore = Firestore()
         val id = intent.getIntExtra("idGenero", -1)
 
         if (id == -1) {
-            BasesDatosMemoria.agregarGenero(
+            firestore.agregarGenero(
                 nuevoGenero
             )
         } else {
-            nuevoGenero.idBGenero = id
-            BasesDatosMemoria.actualizarGenero(nuevoGenero)
+            nuevoGenero.key = id.toString()
+            firestore.actualizarGenero(nuevoGenero)
         }
     }
 
