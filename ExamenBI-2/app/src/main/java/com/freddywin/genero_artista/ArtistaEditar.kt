@@ -99,17 +99,18 @@ class ArtistaEditar : AppCompatActivity() {
             esPopular = esPopularSi.isChecked,
             generoId = generoId ?: ""
         )
-        val databaseReference = FirebaseDatabase.getInstance().reference
-        if (idArtista == null) {
-            // Agregar un nuevo artista a Firebase
-            val artistaRef = databaseReference.child("artistas").push()
-            nuevoArtista.generoId = artistaRef.key ?: ""
-            artistaRef.setValue(nuevoArtista)
 
+
+        val firestore = Firestore()
+        val id = intent.getIntExtra("idArtista", -1)
+
+        if (id == -1) {
+            firestore.agregarArtista(
+                nuevoArtista
+            )
         } else {
-            // Actualizar un artista existente en Firebase
-            val artistaRef = databaseReference.child("artistas").child(idArtista!!)
-            artistaRef.setValue(nuevoArtista)
+            nuevoArtista.idArtista = id.toString()
+            firestore.actualizarArtista(nuevoArtista)
         }
 
         setResult(RESULT_OK)

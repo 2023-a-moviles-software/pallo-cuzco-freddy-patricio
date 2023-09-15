@@ -58,7 +58,7 @@ class GeneroEditar : AppCompatActivity() {
         val esPopularSi = findViewById<RadioButton>(R.id.rdb_espopular_generoSi)
 
         val nuevoGenero = BGenero(
-            key = intent.getStringExtra("idGenero"), // Mantenemos la clave original
+            idGenero = intent.getStringExtra("idGenero"), // Mantenemos la clave original
             nombreGenero = nombreGenero.text.toString(),
             calificacionGenero = calificacion.text.toString().toDouble(),
             fechaGenero = fechagenero.text.toString().toInt(),
@@ -72,7 +72,7 @@ class GeneroEditar : AppCompatActivity() {
                 nuevoGenero
             )
         } else {
-            nuevoGenero.key = id.toString()
+            nuevoGenero.idGenero = id.toString()
             firestore.actualizarGenero(nuevoGenero)
         }
     }

@@ -28,11 +28,13 @@ class VerGenero : AppCompatActivity() {
         )
         val listView = findViewById<ListView>(R.id.lst_view_mostrar_artista)
         listView.adapter = adaptador
+        adaptador.notifyDataSetChanged()
 
         val botonCrearArtista = findViewById<Button>(R.id.btnCrearArtista)
         botonCrearArtista.setOnClickListener {
             irActividad(ArtistaEditar::class.java)
         }
+        adaptador.notifyDataSetChanged()
         idGenero = intent.getIntExtra("idGenero", -1)
         actualizarListViewArtista()
     }
@@ -111,10 +113,10 @@ class VerGenero : AppCompatActivity() {
             mutableListOf()
         )
         listView.adapter = adaptador
+        adaptador.notifyDataSetChanged()
 
 
-        // Limpia el adaptador para eliminar los elementos anteriores
-        adaptador.clear()
+
 
         // Obtener artistas del género desde Firebase
         val artistasRef =

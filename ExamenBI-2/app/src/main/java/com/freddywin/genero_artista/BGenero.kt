@@ -1,20 +1,20 @@
 package com.freddywin.genero_artista
 
 class BGenero {
-    var key: String? = null
+    var idGenero: String? = null
     var nombreGenero: String
     var calificacionGenero: Double
     var fechaGenero: Int
     var esPopular: Boolean
 
     constructor(
-        key : String?,
+        idGenero: String?,
         nombreGenero: String,
         calificacionGenero: Double,
         fechaGenero: Int,
         esPopular: Boolean
     ) {
-        this.key=key
+        this.idGenero = idGenero
         this.nombreGenero = nombreGenero
         this.calificacionGenero = calificacionGenero
         this.fechaGenero = fechaGenero
@@ -22,6 +22,6 @@ class BGenero {
     }
 
     override fun toString(): String {
-        return "${key}: ${nombreGenero}"
+        return "${idGenero}: ${nombreGenero}"
     }
 }
